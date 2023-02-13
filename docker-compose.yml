@@ -5,7 +5,7 @@ services:
     image: mysql:5.7
     platform: ${ARCHITECTURE_PLATFORM}
     volumes:
-      - db_data:/var/lib/mysql
+      - ./wp_data:/var/lib/mysql
     restart: always
     env_file: .env
     environment:
@@ -49,7 +49,7 @@ services:
       WORDPRESS_TABLE_PREFIX: ${WORDPRESS_TABLE_PREFIX}
       WORDPRESS_DEBUG: ${WORDPRESS_DEBUG:-false}
     volumes:
-      - wp_data:/var/www/html:rw
+      - ./wordpress:/var/www/html:rw
       - ./configuration/apache2.conf:/etc/apache2/apache2.conf:ro
     networks:
       - wordpress-network
@@ -69,14 +69,14 @@ services:
       WORDPRESS_DB_USER: ${MYSQL_USER}
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
-      - wp_data:/var/www/html:rw
+      - ./wordpress:/var/www/html:rw
       - ./bin/install-wp.sh:/usr/local/bin/install-wp:ro
     networks:
       - wordpress-network
 
 volumes:
   db_data:
-  wp_data:
+  wordpress:
 
 networks:
   wordpress-network:
